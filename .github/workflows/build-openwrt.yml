@@ -61,11 +61,11 @@ jobs:
        
     - name: 自定义软件包或插件
       run: |
-           cd openwrt/package
-           mkdir openwrt-packages
-           cd openwrt-packages
-           git clone https://github.com/openwrt-develop/luci-theme-atmaterial.git
-           git clone https://github.com/rosywrt/luci-theme-rosy.git 
+        cd openwrt/package
+        mkdir openwrt-packages
+        cd openwrt-packages
+        git clone https://github.com/openwrt-develop/luci-theme-atmaterial.git
+        git clone https://github.com/rosywrt/luci-theme-rosy.git 
            
     - name: 同步network
       env: 
