@@ -1,4 +1,4 @@
-## kuole 的 OpenWrt 云编译仓库
+## 欢迎来到 kuole 的 OpenWrt 云编译仓库
 
 ### 鸣谢
 - 引用了 P3TERX 大的 Actions-OpenWrt仓库：https://github.com/P3TERX/Actions-OpenWrt.git
