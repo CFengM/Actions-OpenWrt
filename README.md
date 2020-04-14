@@ -1,6 +1,6 @@
-# kuole 的 OpenWrt 云编译仓库
+## kuole 的 OpenWrt 云编译仓库
 
-## 鸣谢
+### 鸣谢
 - 引用了 P3TERX 大的 Actions-OpenWrt仓库：https://github.com/P3TERX/Actions-OpenWrt.git
 - 引用了 lean大 的仓库：https://github.com/coolsnowwolf/lede.git
 - 引用了 https://github.com/jefferymvp/luci-app-koolproxyR
@@ -10,11 +10,11 @@
 - 参考了 garypang13 的仓库：https://github.com/garypang13/Actions-OpenWrt-Nginx.git
 - 参考了 hyird 的仓库：https://github.com/hyird/Openwrt-AutoBuild.git
 
-## 再次鸣谢
+### 再次鸣谢
 - 感谢 garypang13 （TG_ID：翠翠🐻🔫）在电报群及私下的多次指导
 - 感谢 hyird （TG_ID：hyird）在电报群的多次指导
 
-### 注
+#### 注
 - 这里的仓库，更改了web ip为：192.168.2.1
 - network配置，引用了一个私库（私库：my-files 仅存放一个network文件）；使用需要配置个人令牌到这个仓库的secrets里
 - WiFi密码，引用了本仓库secrets里配置的“WIFI_PASSWORD”
