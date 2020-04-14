@@ -134,8 +134,11 @@ jobs:
         WIFI_PASSWD: ${{ secrets.WIFI_PASSWD }}
       if: env.WIFI_PASSWD
       run: |
+        sed -i '$i uci set wireless.@wifi-iface[0].encryption='WPAPSKWPA2PSK' openwrt/package/lean/default-settings/files/zzz-default-settings
         sed -i '$i uci set wireless.@wifi-iface[0].key=${{ env.WIFI_PASSWD }}' openwrt/package/lean/default-settings/files/zzz-default-settings
+        sed -i '$i uci set wireless.@wifi-iface[1].encryption='WPAPSKWPA2PSK' openwrt/package/lean/default-settings/files/zzz-default-settings
         sed -i '$i uci set wireless.@wifi-iface[1].key=${{ env.WIFI_PASSWD }}' openwrt/package/lean/default-settings/files/zzz-default-settings
+        sed -i '$i uci commit wireless' openwrt/package/lean/default-settings/files/zzz-default-settings
 
     - name: SSH connection to Actions 请连接 SSH 操作
       uses: P3TERX/debugger-action@master
