@@ -16,11 +16,11 @@ on:
     branches:
       - master
     paths:
-      - '.config'
+      - '.config'     
 #  schedule:
 #    - cron: 0 8 * * 5
-#  watch:
-#    types: started
+  watch:
+    types: started
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
@@ -42,8 +42,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
-
-    - name: Initialization environment
+      
+    - name: Initialization environment 初始化环境
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
@@ -56,16 +56,68 @@ jobs:
         sudo timedatectl set-timezone "$TZ"
         curl -fsSL https://raw.githubusercontent.com/P3TERX/dotfiles/master/.bashrc >> ~/.bashrc
 
-    - name: Clone source code
+    - name: Clone source code 克隆源代码
       run: git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
+       
+    - name: 自定义软件包或插件
+      run: |
+           cd openwrt/package
+           mkdir openwrt-packages
+           cd openwrt-packages
+           git clone https://github.com/openwrt-develop/luci-theme-atmaterial.git
+           git clone https://github.com/rosywrt/luci-theme-rosy.git 
+           
+    - name: 同步network
+      env: 
+        token: ${{ secrets.ACCESS_TOKEN }}  
+      run: |
+        cd openwrt
+        mkdir -p package/base-files/files/etc/config || true
+        cd package/base-files/files/etc/config  
+        git clone https://$token@github.com/kuole-o/my-files
+        mv /my-files/network ./
+        rm -rf /my-files
+ 
+# 另一种同步私库方法，但会覆盖/清空openwrt/ 因此已弃用   
+#    - name: 创建一个目录
+#      run: | 
+#        cd openwrt
+#        mkdir -p files/etc/config || true    
+  
+#    - name: 链接私库      
+#      uses: actions/checkout@master
+#      with:
+#        repository: kuole-o/my-files 
+#        token: ${{ secrets.ACCESS_TOKEN }}
+#        BRANCH: master
 
+#    - name: 移动私库同步的network文件
+#      run: | 
+#         mkdir -p files/etc/config || true
+#         mv network files/etc/config
+            
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
 
-    - name: Load custom configuration
+    - name: 增加LuCI主题
+      run: |    
+           cat >> .config <<EOF
+           CONFIG_PACKAGE_luci-theme-argon=y
+           CONFIG_PACKAGE_luci-theme-netgear=y
+           CONFIG_PACKAGE_luci-theme-rosy=y
+           CONFIG_PACKAGE_luci-theme-atmaterial=y
+           EOF
+           
+    - name: 增加koolproxyR插件        
+      run: | 
+           cat >> .config <<EOF
+           CONFIG_PACKAGE_luci-app-koolproxyr=y
+           EOF                    
+
+    - name: Load custom configuration 加载自定义配置
       run: |
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
@@ -73,11 +125,19 @@ jobs:
         cd openwrt
         ../$DIY_SH
 
-    - name: SSH connection to Actions
+    - name: 设置WiFi密码
+      env:
+        WIFI_PASSWD: ${{ secrets.WIFI_PASSWD }}
+      if: env.WIFI_PASSWD
+      run: |
+        sed -i '$i uci set wireless.@wifi-iface[0].key=${{ env.WIFI_PASSWD }}' openwrt/package/lean/default-settings/files/zzz-default-settings
+        sed -i '$i uci set wireless.@wifi-iface[1].key=${{ env.WIFI_PASSWD }}' openwrt/package/lean/default-settings/files/zzz-default-settings
+
+    - name: SSH connection to Actions 请连接 SSH 操作
       uses: P3TERX/debugger-action@master
       if: env.SSH_ACTIONS == 'true' || contains(github.event.action, 'ssh')
 
-    - name: Download package
+    - name: Download package 下载包
       id: package
       run: |
         cd openwrt
@@ -86,7 +146,7 @@ jobs:
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
 
-    - name: Compile the firmware
+    - name: Compile the firmware 编译固件
       id: compile
       run: |
         cd openwrt
@@ -94,14 +154,14 @@ jobs:
         make -j$(nproc) || make -j1 V=s
         echo "::set-output name=status::success"
 
-    - name: Upload bin directory
+    - name: Upload bin directory 上传bin目录
       uses: actions/upload-artifact@master
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
         name: OpenWrt_bin
         path: openwrt/bin
 
-    - name: Organize files
+    - name: Organize files 整理文件 
       id: organize
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
@@ -110,23 +170,24 @@ jobs:
         echo "::set-env name=FIRMWARE::$PWD"
         echo "::set-output name=status::success"
 
-    - name: Upload firmware directory
+    - name: Upload firmware directory 上传固件目录
       uses: actions/upload-artifact@master
       if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
         name: OpenWrt_firmware
         path: ${{ env.FIRMWARE }}
 
-    - name: Upload firmware to cowtransfer
+    - name: 将固件上传到 Cowtransfer
       if: steps.organize.outputs.status == 'success' && env.UPLOAD_COWTRANSFER == 'true' && !cancelled()
       run: |
         curl -fsSL git.io/file-transfer | sh
         ./transfer cow --block 2621440 -s -p 99 -t 3 --hash --no-progress ${FIRMWARE} 2>&1 | tee cowtransfer.log
         echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
 
-    - name: Upload firmware to WeTransfer
+    - name: 将固件上传到 WeTransfer
       if: steps.organize.outputs.status == 'success' && env.UPLOAD_WETRANSFER == 'true' && !cancelled()
       run: |
         curl -fsSL git.io/file-transfer | sh
         ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
         echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
+        
