@@ -75,7 +75,11 @@ jobs:
         mkdir -p package/base-files/files/etc/config || true
         cd package/base-files/files/etc/config  
         git clone https://$token@github.com/kuole-o/my-files
-        mv /my-files/network ./
+
+    - name: 移动network文件
+      run: |
+        cd openwrt/package/base-files/files/etc/config
+        mv my-files/network ./
         rm -rf /my-files
  
 # 另一种同步私库方法，但会覆盖/清空openwrt/ 因此已弃用   
