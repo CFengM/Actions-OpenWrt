@@ -10,7 +10,7 @@
 - 参考了 garypang13 的仓库：https://github.com/garypang13/Actions-OpenWrt-Nginx.git
 - 参考了 hyird 的仓库：https://github.com/hyird/Openwrt-AutoBuild.git
 
-### 再次鸣谢
+### 感谢以下朋友的指导
 - 感谢 garypang13 （TG_ID：翠翠🐻🔫）在电报群及私下的多次指导
 - 感谢 hyird （TG_ID：hyird）在电报群的多次指导
 
