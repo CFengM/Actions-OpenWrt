@@ -9,10 +9,11 @@
 #sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
 
 sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/files/bin/config_generate
+sed -i 's/root:.*/root:$1$PgqmDetr$xqXbP57ysPKh9m36oycQS\/:18361:0:99999:7:::/g' /etc/shadow
 
 cd openwrt
 git clone https://github.com/jerrykuku/luci-theme-argon -b 19.07_stable ./package/feeds
-git clone https://github.com/jefferymvp/luci-app-koolproxyR ./package
+git clone https://github.com/user1121114685/koolproxyR.git /package/lean
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 
