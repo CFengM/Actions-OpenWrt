@@ -21,47 +21,47 @@ uci commit system
 # uci set wireless.key="password"
 # uci commit wireless
 
-uci set shadowsocksr.@global[0].pdnsd_enable='0'
-uci del shadowsocksr.@global[0].tunnel_forward
-uci add_list shadowsocksr.@access_control[0].wan_fw_ips='1.1.1.1'
-uci add_list shadowsocksr.@access_control[0].wan_fw_ips='208.67.222.222'
-uci add_list shadowsocksr.@access_control[0].wan_fw_ips='8.8.8.8'
-uci add_list shadowsocksr.@access_control[0].wan_fw_ips='8.8.4.4'
-uci add_list shadowsocksr.@access_control[0].wan_fw_ips='9.9.9.9'
-uci add_list shadowsocksr.@access_control[0].wan_fw_ips='218.102.23.228'
-uci add_list shadowsocksr.@access_control[0].wan_fw_ips='210.0.255.250'
-uci add_list shadowsocksr.@access_control[0].wan_fw_ips='168.95.1.1'
-uci add_list shadowsocksr.@access_control[0].wan_fw_ips='202.86.191.50'
-uci add_list shadowsocksr.@access_control[0].wan_fw_ips='77.88.8.8'
-uci add_list shadowsocksr.@access_control[0].wan_fw_ips='101.101.101.101'
-uci add_list shadowsocksr.@access_control[0].wan_fw_ips='203.198.7.66'
-uci add_list shadowsocksr.@access_control[0].wan_fw_ips='202.56.128.30'
-uci add_list shadowsocksr.@access_control[0].wan_fw_ips='149.112.112.112'
-uci commit shadowsocksr
+# uci set shadowsocksr.@global[0].pdnsd_enable='0'
+# uci del shadowsocksr.@global[0].tunnel_forward
+# uci add_list shadowsocksr.@access_control[0].wan_fw_ips='1.1.1.1'
+# uci add_list shadowsocksr.@access_control[0].wan_fw_ips='208.67.222.222'
+# uci add_list shadowsocksr.@access_control[0].wan_fw_ips='8.8.8.8'
+# uci add_list shadowsocksr.@access_control[0].wan_fw_ips='8.8.4.4'
+# uci add_list shadowsocksr.@access_control[0].wan_fw_ips='9.9.9.9'
+# uci add_list shadowsocksr.@access_control[0].wan_fw_ips='218.102.23.228'
+# uci add_list shadowsocksr.@access_control[0].wan_fw_ips='210.0.255.250'
+# uci add_list shadowsocksr.@access_control[0].wan_fw_ips='168.95.1.1'
+# uci add_list shadowsocksr.@access_control[0].wan_fw_ips='202.86.191.50'
+# uci add_list shadowsocksr.@access_control[0].wan_fw_ips='77.88.8.8'
+# uci add_list shadowsocksr.@access_control[0].wan_fw_ips='101.101.101.101'
+# uci add_list shadowsocksr.@access_control[0].wan_fw_ips='203.198.7.66'
+# uci add_list shadowsocksr.@access_control[0].wan_fw_ips='202.56.128.30'
+# uci add_list shadowsocksr.@access_control[0].wan_fw_ips='149.112.112.112'
+# uci commit shadowsocksr
 
-rm -f /tmp/dnsmasq.adblock
-rm -f /tmp/1.adblock
-rm -f /tmp/2.adblock
-rm -f /tmp/3.adblock
-rm -f /tmp/hebing.adblock
+# rm -f /tmp/dnsmasq.adblock
+# rm -f /tmp/1.adblock
+# rm -f /tmp/2.adblock
+# rm -f /tmp/3.adblock
+# rm -f /tmp/hebing.adblock
 
 #下载规则
-wget-ssl --no-check-certificate -O- https://easylist-downloads.adblo ... tchina+easylist.txt | grep ^\|\|[^\*]*\^$ | sed -e 's:||:address\=\/:' -e 's:\^:/0\.0\.0\.0:' > /tmp/1.adblock
-wget-ssl --no-check-certificate -O- https://adguardteam.github.io/Ad ... /Filters/filter.txt | grep ^\|\|[^\*]*\^$ | sed -e 's:||:address\=\/:' -e 's:\^:/0\.0\.0\.0:' > /tmp/2.adblock
-wget-ssl --no-check-certificate -O- https://raw.githubusercontent.com/vokins/yhosts/master/hosts | grep 127.0.0.1 | sed -e 's:127.0.0.1 :address\=\/:' -e 's:/0\.0\.0\.0:' > /tmp/3.adblock
+# wget-ssl --no-check-certificate -O- https://easylist-downloads.adblo ... tchina+easylist.txt | grep ^\|\|[^\*]*\^$ | sed -e 's:||:address\=\/:' -e 's:\^:/0\.0\.0\.0:' > /tmp/1.adblock
+# wget-ssl --no-check-certificate -O- https://adguardteam.github.io/Ad ... /Filters/filter.txt | grep ^\|\|[^\*]*\^$ | sed -e 's:||:address\=\/:' -e 's:\^:/0\.0\.0\.0:' > /tmp/2.adblock
+# wget-ssl --no-check-certificate -O- https://raw.githubusercontent.com/vokins/yhosts/master/hosts | grep 127.0.0.1 | sed -e 's:127.0.0.1 :address\=\/:' -e 's:/0\.0\.0\.0:' > /tmp/3.adblock
 #合并
-cat /tmp/1.adblock /tmp/2.adblock /tmp/3.adblock > /tmp/hebing.adblock
+# cat /tmp/1.adblock /tmp/2.adblock /tmp/3.adblock > /tmp/hebing.adblock
 #去掉重复
-cat /tmp/hebing.adblock | sort | uniq > /tmp/dnsmasq.adblock
-if [ -s "/tmp/dnsmasq.adblock" ];then
-        sed -i '/youku.com/d' /tmp/dnsmasq.adblock
-        if ( ! cmp -s /tmp/dnsmasq.adblock /usr/share/adbyby/dnsmasq.adblock );then
-                mv /tmp/dnsmasq.adblock /usr/share/adbyby/dnsmasq.adblock       
-        fi       
-fi
+# cat /tmp/hebing.adblock | sort | uniq > /tmp/dnsmasq.adblock
+# if [ -s "/tmp/dnsmasq.adblock" ];then
+#         sed -i '/youku.com/d' /tmp/dnsmasq.adblock
+#         if ( ! cmp -s /tmp/dnsmasq.adblock /usr/share/adbyby/dnsmasq.adblock );then
+#                 mv /tmp/dnsmasq.adblock /usr/share/adbyby/dnsmasq.adblock       
+#         fi       
+# fi
 
-sh /usr/share/adbyby/adupdate.sh
-sleep 10 && /etc/init.d/adbyby restart
+# sh /usr/share/adbyby/adupdate.sh
+# sleep 10 && /etc/init.d/adbyby restart
 
 
 
