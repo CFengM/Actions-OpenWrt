@@ -67,7 +67,7 @@ jobs:
         git clone https://github.com/openwrt-develop/luci-theme-atmaterial.git
         git clone https://github.com/rosywrt/luci-theme-rosy.git 
            
-    - name: 同步network/shadowsocksr/adbyby
+    - name: 同步network/shadowsocksr
       env: 
         token: ${{ secrets.ACCESS_TOKEN }}  
       run: |
@@ -76,7 +76,7 @@ jobs:
         cd package/base-files/files/etc/config  
         git clone https://$token@github.com/kuole-o/my-files
 
-    - name: 移动network/shadowsocksr/adbyby
+    - name: 移动network/shadowsocksr
       run: |
         cd openwrt/package/base-files/files/etc/config
         mv my-files/* ./
