@@ -17,7 +17,7 @@
 
 #### 注
 - 这里的仓库，更改了web ip为：192.168.2.1
-- network配置，引用了一个私库（私库：my-files 仅存放一个network文件）；使用需要配置个人令牌到这个仓库的secrets里
+- network、shadowsocksr配置，引用了一个私库（私库：my-files 存放了 network、shadowsocksr文件）；使用需要配置个人令牌到这个仓库的secrets里
 - WiFi密码，引用了本仓库secrets里配置的“WIFI_PASSWORD”
 - root账号密码设置了本人自己的密码，Fork需要修改
 
