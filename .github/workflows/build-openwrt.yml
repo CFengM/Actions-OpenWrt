@@ -59,15 +59,13 @@ jobs:
     - name: Clone source code 克隆源代码
       run: git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
        
-    - name: 自定义软件包或插件
-      run: |
-        cd openwrt/package
-        mkdir openwrt-packages
-        cd openwrt-packages
-        git clone https://github.com/openwrt-develop/luci-theme-atmaterial.git
-        git clone https://github.com/rosywrt/luci-theme-rosy.git
-        cd -
-        git clone https://github.com/user1121114685/koolproxyR.git ./lean
+#    - name: 自定义软件包或插件
+#      run: |
+#        cd openwrt/package
+#        mkdir openwrt-packages
+#        cd openwrt-packages
+#        git clone https://github.com/openwrt-develop/luci-theme-atmaterial.git
+#        git clone https://github.com/rosywrt/luci-theme-rosy.git
         
     - name: 同步network/shadowsocksr
       env: 
