@@ -101,7 +101,9 @@ jobs:
 #         mv network files/etc/config
             
     - name: Update feeds
-      run: cd openwrt && ./scripts/feeds update -a
+      run: | 
+        sed -i 's/\"#src-git\"/\"src-git\"/g' ./feeds.conf.default
+        cd openwrt && ./scripts/feeds update -a
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
@@ -121,24 +123,24 @@ jobs:
            CONFIG_PACKAGE_luci-app-koolproxyr=y
            EOF  
  
-    - name: 设置WiFi密码
-      env:
-        WIFI_PASSWD: ${{ secrets.WIFI_PASSWD }}
-      if: env.WIFI_PASSWD
-      run: |
-        sed -i '$i uci set wireless.@wifi-iface[0].encryption=psk2' openwrt/package/lean/default-settings/files/zzz-default-settings
-        sed -i '$i uci set wireless.@wifi-iface[0].key=${{ env.WIFI_PASSWD }}' openwrt/package/lean/default-settings/files/zzz-default-settings
-        sed -i '$i uci set wireless.@wifi-iface[1].encryption=psk2' openwrt/package/lean/default-settings/files/zzz-default-settings
-        sed -i '$i uci set wireless.@wifi-iface[1].key=${{ env.WIFI_PASSWD }}' openwrt/package/lean/default-settings/files/zzz-default-settings
-        sed -i '$i uci commit wireless' openwrt/package/lean/default-settings/files/zzz-default-settings
-        
-#    - name: 改源码设置WiFi密码
+#    - name: 设置WiFi密码
 #      env:
 #        WIFI_PASSWD: ${{ secrets.WIFI_PASSWD }}
 #      if: env.WIFI_PASSWD
 #      run: |
-#        sed -i 's/none/WPAPSKWPA2PSK/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh
-#        sed 's/encryption/a\set wireless.default_radio${devidx}.key=${{ env.WIFI_PASSWD }}/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh      
+#        sed -i '$i uci set wireless.@wifi-iface[0].encryption=psk2' openwrt/package/lean/default-settings/files/zzz-default-settings
+#        sed -i '$i uci set wireless.@wifi-iface[0].key=${{ env.WIFI_PASSWD }}' openwrt/package/lean/default-settings/files/zzz-default-settings
+#        sed -i '$i uci set wireless.@wifi-iface[1].encryption=psk2' openwrt/package/lean/default-settings/files/zzz-default-settings
+#        sed -i '$i uci set wireless.@wifi-iface[1].key=${{ env.WIFI_PASSWD }}' openwrt/package/lean/default-settings/files/zzz-default-settings
+#        sed -i '$i uci commit wireless' openwrt/package/lean/default-settings/files/zzz-default-settings
+        
+    - name: 改源码设置WiFi密码
+      env:
+        WIFI_PASSWD: ${{ secrets.WIFI_PASSWD }}
+      if: env.WIFI_PASSWD
+      run: |
+        sed -i 's/none/psk2/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh
+        sed 's/encryption/a\set wireless.default_radio${devidx}.key=${{ env.WIFI_PASSWD }}/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh      
                              
     - name: Load custom configuration 加载自定义配置
       run: |
