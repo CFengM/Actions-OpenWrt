@@ -23,7 +23,7 @@ on:
     types: started
 
 env:
-  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_URL: https://github.com/kuole-o/lede.git
   REPO_BRANCH: master
   CONFIG_FILE: .config
   DIY_SH: diy.sh
@@ -101,10 +101,7 @@ jobs:
 #         mv network files/etc/config
             
     - name: Update feeds
-      run: | 
-        rm -rf ./tmp;
-        sed -i 's/\"#src-git\"/\"src-git\"/g' openwrt/feeds.conf.default;
-        cd openwrt && ./scripts/feeds update -a
+      run: cd openwrt && ./scripts/feeds update -a
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
@@ -118,21 +115,18 @@ jobs:
            CONFIG_PACKAGE_luci-theme-atmaterial=y
            EOF
  
-    - name: 增加koolproxyR插件        
-      run: | 
-           cat >> .config <<EOF
-           CONFIG_PACKAGE_luci-app-koolproxyr=y
-           EOF  
+#    - name: 增加koolproxyR插件        
+#      run: | 
+#           cat >> .config <<EOF
+#           CONFIG_PACKAGE_luci-app-koolproxyr=y
+#           EOF  
  
     - name: 设置WiFi密码
       env:
         WIFI_PASSWD: ${{ secrets.WIFI_PASSWD }}
       if: env.WIFI_PASSWD
       run: |
-        sed -i '$i uci set wireless.@wifi-iface[0].encryption=psk2' openwrt/package/lean/default-settings/files/zzz-default-settings
-        sed -i '$i uci set wireless.@wifi-iface[0].key=${{ env.WIFI_PASSWD }}' openwrt/package/lean/default-settings/files/zzz-default-settings
-        sed -i '$i uci set wireless.@wifi-iface[1].encryption=psk2' openwrt/package/lean/default-settings/files/zzz-default-settings
-        sed -i '$i uci set wireless.@wifi-iface[1].key=${{ env.WIFI_PASSWD }}' openwrt/package/lean/default-settings/files/zzz-default-settings
+        sed -i '$i uci set wireless.@wifi-iface.key=${{ env.WIFI_PASSWD }}' openwrt/package/lean/default-settings/files/zzz-default-settings
         sed -i '$i uci commit wireless' openwrt/package/lean/default-settings/files/zzz-default-settings
         
 #    - name: 改源码设置WiFi密码
