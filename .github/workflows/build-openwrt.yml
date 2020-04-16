@@ -114,7 +114,13 @@ jobs:
            CONFIG_PACKAGE_luci-theme-rosy=y
            CONFIG_PACKAGE_luci-theme-atmaterial=y
            EOF
-           
+ 
+    - name: 增加koolproxyR插件        
+      run: | 
+           cat >> .config <<EOF
+           CONFIG_PACKAGE_luci-app-koolproxyr=y
+           EOF  
+ 
     - name: 设置WiFi密码
       env:
         WIFI_PASSWD: ${{ secrets.WIFI_PASSWD }}
@@ -141,12 +147,6 @@ jobs:
         chmod +x $DIY_SH
         cd openwrt
         ../$DIY_SH
-
-    - name: 增加koolproxyR插件        
-      run: | 
-           cat >> .config <<EOF
-           CONFIG_PACKAGE_luci-app-koolproxyr=y
-           EOF  
 
     - name: SSH connection to Actions 请连接 SSH 操作
       uses: P3TERX/debugger-action@master
