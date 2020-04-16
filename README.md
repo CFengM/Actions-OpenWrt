@@ -1,5 +1,5 @@
 ## 欢迎来到 kuole 的 OpenWrt 云编译仓库
-此仓库中配置文件适用于 K2p 路由器，MTK A1/A2 版
+ K2p MTK A1/A2 自用版
 
 ### 鸣谢
 - 引用了 P3TERX 大的 Actions-OpenWrt仓库：https://github.com/P3TERX/Actions-OpenWrt.git
