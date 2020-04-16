@@ -14,7 +14,7 @@ cd openwrt
 git clone https://github.com/jerrykuku/luci-theme-argon -b 19.07_stable ./package/feeds/luci/themes
 git clone https://github.com/openwrt-develop/luci-theme-atmaterial.git ./package/feeds/luci/themes
 git clone https://github.com/rosywrt/luci-theme-rosy.git ./package/feeds/luci/themes
-git clone https://github.com/tzxiaozhen88/luci-app-koolproxyR.git ./package/feeds/luci/applications
+# git clone https://github.com/tzxiaozhen88/luci-app-koolproxyR.git ./package/feeds/luci/applications
 
 ./scripts/feeds update -a
 ./scripts/feeds install -a
