@@ -126,8 +126,7 @@ jobs:
         WIFI_PASSWD: ${{ secrets.WIFI_PASSWD }}
       if: env.WIFI_PASSWD
       run: |
-        sed -i '$i uci set wireless.@wifi-iface.key=${{ env.WIFI_PASSWD }}' openwrt/package/lean/default-settings/files/zzz-default-settings
-        sed -i '$i uci commit wireless' openwrt/package/lean/default-settings/files/zzz-default-settings
+        sed -i 's/12345678/${{ env.WIFI_PASSWD }}/g' openwrt/package/lean/default-settings/files/zzz-default-settings
         
 #    - name: 改源码设置WiFi密码
 #      env:
