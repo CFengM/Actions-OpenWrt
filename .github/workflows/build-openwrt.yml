@@ -65,8 +65,10 @@ jobs:
         mkdir openwrt-packages
         cd openwrt-packages
         git clone https://github.com/openwrt-develop/luci-theme-atmaterial.git
-        git clone https://github.com/rosywrt/luci-theme-rosy.git 
-           
+        git clone https://github.com/rosywrt/luci-theme-rosy.git
+        cd -
+        git clone https://github.com/user1121114685/koolproxyR.git ./lean
+        
     - name: 同步network/shadowsocksr
       env: 
         token: ${{ secrets.ACCESS_TOKEN }}  
@@ -120,11 +122,19 @@ jobs:
         WIFI_PASSWD: ${{ secrets.WIFI_PASSWD }}
       if: env.WIFI_PASSWD
       run: |
-        sed -i '$i uci set wireless.@wifi-iface[0].encryption=WPAPSKWPA2PSK' openwrt/package/lean/default-settings/files/zzz-default-settings
+        sed -i '$i uci set wireless.@wifi-iface[0].encryption=psk2' openwrt/package/lean/default-settings/files/zzz-default-settings
         sed -i '$i uci set wireless.@wifi-iface[0].key=${{ env.WIFI_PASSWD }}' openwrt/package/lean/default-settings/files/zzz-default-settings
-        sed -i '$i uci set wireless.@wifi-iface[1].encryption=WPAPSKWPA2PSK' openwrt/package/lean/default-settings/files/zzz-default-settings
+        sed -i '$i uci set wireless.@wifi-iface[1].encryption=psk2' openwrt/package/lean/default-settings/files/zzz-default-settings
         sed -i '$i uci set wireless.@wifi-iface[1].key=${{ env.WIFI_PASSWD }}' openwrt/package/lean/default-settings/files/zzz-default-settings
         sed -i '$i uci commit wireless' openwrt/package/lean/default-settings/files/zzz-default-settings
+        
+#    - name: 改源码设置WiFi密码
+#      env:
+#        WIFI_PASSWD: ${{ secrets.WIFI_PASSWD }}
+#      if: env.WIFI_PASSWD
+#      run: |
+#        sed -i 's/none/WPAPSKWPA2PSK/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh
+#        sed 's/encryption/a\set wireless.default_radio${devidx}.key=${{ env.WIFI_PASSWD }}/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh      
                              
     - name: Load custom configuration 加载自定义配置
       run: |
