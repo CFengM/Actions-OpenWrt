@@ -12,6 +12,8 @@ sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/files/bin/config_generat
 
 cd openwrt
 git clone https://github.com/jerrykuku/luci-theme-argon -b 19.07_stable ./package/feeds
+git clone https://github.com/user1121114685/koolproxyR.git ./package/feeds/luci/applications
+
 ./scripts/feeds update -a
 ./scripts/feeds install -a
 
