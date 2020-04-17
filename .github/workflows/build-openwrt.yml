@@ -76,11 +76,11 @@ jobs:
         cd package/base-files/files/etc/config  
         git clone https://$token@github.com/kuole-o/my-files
 
-    - name: 移动network/shadowsocksr
+    - name: 移动配置文件
       run: |
         cd openwrt/package/base-files/files/etc/config
-        mv my-files/* ./
-        rm -rf /my-files
+        mv my-files/network . && mv my-files/shadowsocksr . && mv my-files/wireless ..
+        rm -rf my-files/
  
 # 另一种同步私库方法，但会覆盖/清空openwrt/ 因此已弃用   
 #    - name: 创建一个目录
