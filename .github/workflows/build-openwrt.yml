@@ -78,6 +78,7 @@ jobs:
 
     - name: 移动配置文件
       run: |
+        rm -rf openwrt/package/base-files/files/etc/wireless
         cd openwrt/package/base-files/files/etc/config
         mv my-files/network . && mv my-files/shadowsocksr . && mv my-files/wireless ..
         rm -rf my-files/
