@@ -78,11 +78,12 @@ jobs:
 
     - name: 移动配置文件
       run: |
-        rm -rf openwrt/package/base-files/files/etc/wireless/mt7615/mt7615*.dat
-        mkdir -p openwrt/package/base-files/files/etc/wireless/mt7615 || true
+        rm -rf openwrt/package/lean/mt/drivers/mt_wifi/files/mt7615.1*.dat
         cd openwrt/package/base-files/files/etc/config
-        mv my-files/network . && mv my-files/shadowsocksr . && mv my-files/mt7615*.dat ../wireless/mt7615
-        rm -rf my-files/
+        mv my-files/network . && mv my-files/shadowsocksr .
+        cd ../../../..
+        mv base-files/files/etc/config/my-files/mt7615.1*.dat ./lean/mt/drivers/mt_wifi/files
+        rm -rf openwrt/package/base-files/files/etc/config/my-files
 
 # 另一种同步私库方法，但会覆盖/清空openwrt/ 因此已弃用   
 #    - name: 创建一个目录
