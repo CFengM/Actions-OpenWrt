@@ -78,7 +78,7 @@ jobs:
 
     - name: 移动配置文件
       run: |
-        rm -rf openwrt/package/lean/mt/drivers/mt_wifi/files/mt7615.1*.dat
+        rm -f openwrt/package/lean/mt/drivers/mt_wifi/files/mt7615.1*.dat
         cd openwrt/package/base-files/files/etc/config
         mv my-files/network . && mv my-files/shadowsocksr .
         cd ../../../..
