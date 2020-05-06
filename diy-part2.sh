@@ -10,3 +10,7 @@
 
 # Modify default IP
 sed -i 's/192.168.1.1/192.168.2.1/g' package/base-files/files/bin/config_generate
+
+# 调用diy目录下的文件，包括zzz-default-settings文件
+cd openwrt
+cp -Rf ../diy/* ./
