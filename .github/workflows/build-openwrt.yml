@@ -82,12 +82,10 @@ jobs:
     - name: 移动配置文件
       run: |
         rm -f openwrt/package/lean/mt/drivers/mt_wifi/files/mt7615.1*.dat
-        rm -f openwrt/package/helloworld/luci-app-ssr-plus/root/etc/config/shadowsocksr
         cd openwrt/package/base-files/files/etc/config
         mv my-files/network .
         cd ../../../..
         mv base-files/files/etc/config/my-files/mt7615.1*.dat ./lean/mt/drivers/mt_wifi/files
-        mv base-files/files/etc/config/my-files/shadowsocksr ./helloworld/luci-app-ssr-plus/root/etc/config
         rm -rf ./base-files/files/etc/config/my-files
 
 # 另一种同步私库方法，但会覆盖/清空openwrt/ 因此已弃用   
