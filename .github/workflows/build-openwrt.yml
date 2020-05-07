@@ -76,15 +76,14 @@ jobs:
       run: |
         cd openwrt
         mkdir -p package/base-files/files/etc/config || true
-        git clone https://$token@github.com/kuole-o/my-files ./package/base-files/files/etc/config
+        cd package/base-files/files/etc/config
+        git clone https://$token@github.com/kuole-o/my-files
 
     - name: 移动配置文件
       run: |
         rm -f openwrt/package/lean/mt/drivers/mt_wifi/files/mt7615.1*.dat
-        cd openwrt/package/base-files/files/etc/config
-        mv my-files/network .
-        cd ../../../..
-        mv base-files/files/etc/config/my-files/mt7615.1*.dat ./lean/mt/drivers/mt_wifi/files
+        cd openwrt/package/base-files/files/etc/config && mv my-files/network .
+        cd ../../../.. && mv base-files/files/etc/config/my-files/mt7615.1*.dat ./lean/mt/drivers/mt_wifi/files
         rm -rf base-files/files/etc/config/my-files
 
     - name: Load custom feeds 加载自定义p1.sh
