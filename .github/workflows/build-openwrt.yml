@@ -77,26 +77,6 @@ jobs:
         cd openwrt
         ../$DIY_P1_SH
 
-    - name: 同步私库文件
-      env: 
-        token: ${{ secrets.ACCESS_TOKEN }}  
-      run: |
-        cd openwrt
-        mkdir -p package/base-files/files/etc/config || true
-        cd package/base-files/files/etc/config  
-        git clone https://$token@github.com/kuole-o/my-files
-
-    - name: 移动配置文件
-      run: |
-        rm -f openwrt/package/lean/mt/drivers/mt_wifi/files/mt7615.1*.dat
-        rm -f openwrt/package/lean/helloworld/luci-app-ssr-plus/root/etc/config/shadowsocksr
-        cd openwrt/package/base-files/files/etc/config
-        mv my-files/network .
-        cd ../../../..
-        mv base-files/files/etc/config/my-files/mt7615.1*.dat ./lean/mt/drivers/mt_wifi/files
-        mv base-files/files/etc/config/my-files/shadowsocksr ./lean/helloworld/luci-app-ssr-plus/root/etc/config
-        rm -rf ./base-files/files/etc/config/my-files
-
 # 另一种同步私库方法，但会覆盖/清空openwrt/ 因此已弃用   
 #    - name: 创建一个目录
 #      run: | 
@@ -117,6 +97,24 @@ jobs:
 
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
+
+    - name: 同步私库文件
+      env: 
+        token: ${{ secrets.ACCESS_TOKEN }}  
+      run: |
+        cd openwrt
+        mkdir -p package/base-files/files/etc/config || true
+        cd package/base-files/files/etc/config  
+        git clone https://$token@github.com/kuole-o/my-files
+
+    - name: 移动配置文件
+      run: |
+        rm -f openwrt/package/lean/mt/drivers/mt_wifi/files/mt7615.1*.dat
+        rm -f openwrt/scripts/feeds/helloworld/luci-app-ssr-plus/root/etc/config/shadowsocksr
+        cd openwrt/package/base-files/files/etc/config && mv my-files/network .
+        cd ../../../.. && mv base-files/files/etc/config/my-files/mt7615.1*.dat ./lean/mt/drivers/mt_wifi/files
+        cd .. && mv openwrt/package/base-files/files/etc/config/my-files/shadowsocksr ./scripts/feeds/lean/helloworld/luci-app-ssr-plus/root/etc/config
+        rm -rf openwrt/package/base-files/files/etc/config/my-files
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
