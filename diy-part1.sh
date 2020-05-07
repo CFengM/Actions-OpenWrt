@@ -12,8 +12,7 @@
 # sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
 
 # 添加ssr
-cd openwrt
-git clone https://github.com/fw876/helloworld ./package/lean
+git clone https://github.com/fw876/helloworld openwrt/package/lean
 
 # Add a feed source
 #sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
