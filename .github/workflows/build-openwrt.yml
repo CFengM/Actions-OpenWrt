@@ -70,13 +70,29 @@ jobs:
 #        git clone https://github.com/openwrt-develop/luci-theme-atmaterial.git
 #        git clone https://github.com/rosywrt/luci-theme-rosy.git
 
+    - name: 同步私库文件
+      env: 
+        token: ${{ secrets.ACCESS_TOKEN }}  
+      run: |
+        cd openwrt
+        mkdir -p package/base-files/files/etc/config || true
+        cd package/base-files/files/etc/config  
+        git clone https://$token@github.com/kuole-o/my-files
+
+    - name: 移动配置文件
+      run: |
+        rm -f openwrt/package/lean/mt/drivers/mt_wifi/files/mt7615.1*.dat
+        cd openwrt/package/base-files/files/etc/config && mv my-files/network .
+        cd ../../../.. && mv base-files/files/etc/config/my-files/mt7615.1*.dat ./lean/mt/drivers/mt_wifi/files
+        rm -rf base-files/files/etc/config/my-files
+
     - name: Load custom feeds 加载自定义p1.sh
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
         chmod +x $DIY_P1_SH
         cd openwrt
         ../$DIY_P1_SH
-
+                
 # 另一种同步私库方法，但会覆盖/清空openwrt/ 因此已弃用   
 #    - name: 创建一个目录
 #      run: | 
@@ -100,23 +116,6 @@ jobs:
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
-
-    - name: 同步私库文件
-      env: 
-        token: ${{ secrets.ACCESS_TOKEN }}  
-      run: |
-        cd openwrt
-        mkdir -p package/base-files/files/etc/config || true
-        cd package/base-files/files/etc/config  
-        git clone https://$token@github.com/kuole-o/my-files
-
-    - name: 移动配置文件
-      run: |
-        rm -f openwrt/package/lean/mt/drivers/mt_wifi/files/mt7615.1*.dat
-        rm -f openwrt/scripts/feeds/helloworld/luci-app-ssr-plus/root/etc/config/shadowsocksr
-        cd openwrt/package/base-files/files/etc/config && mv my-files/network . && mv my-files/shadowsocksr .
-        cd ../../../.. && mv base-files/files/etc/config/my-files/mt7615.1*.dat ./lean/mt/drivers/mt_wifi/files
-        rm -rf base-files/files/etc/config/my-files
 
     - name: 增加LuCI主题
       run: |
