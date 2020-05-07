@@ -69,7 +69,14 @@ jobs:
 #        cd openwrt-packages
 #        git clone https://github.com/openwrt-develop/luci-theme-atmaterial.git
 #        git clone https://github.com/rosywrt/luci-theme-rosy.git
-        
+
+    - name: Load custom feeds 加载自定义p1.sh
+      run: |
+        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
+        chmod +x $DIY_P1_SH
+        cd openwrt
+        ../$DIY_P1_SH
+
     - name: 同步私库文件
       env: 
         token: ${{ secrets.ACCESS_TOKEN }}  
@@ -105,13 +112,6 @@ jobs:
 #      run: | 
 #         mkdir -p files/etc/config || true
 #         mv network files/etc/config
-            
-    - name: Load custom feeds
-      run: |
-        [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
-        chmod +x $DIY_P1_SH
-        cd openwrt
-        ../$DIY_P1_SH
 
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
