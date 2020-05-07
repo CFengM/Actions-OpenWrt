@@ -34,7 +34,7 @@ env:
   UPLOAD_FIRMWARE: true
   UPLOAD_COWTRANSFER: false
   UPLOAD_WETRANSFER: false
-  UPLOAD_RELEASE: true
+  UPLOAD_RELEASE: false
   TZ: Asia/Shanghai
 
 jobs:
@@ -114,10 +114,9 @@ jobs:
       run: |
         rm -f openwrt/package/lean/mt/drivers/mt_wifi/files/mt7615.1*.dat
         rm -f openwrt/scripts/feeds/helloworld/luci-app-ssr-plus/root/etc/config/shadowsocksr
-        cd openwrt/package/base-files/files/etc/config && mv my-files/network .
+        cd openwrt/package/base-files/files/etc/config && mv my-files/network . && mv my-files/shadowsocksr .
         cd ../../../.. && mv base-files/files/etc/config/my-files/mt7615.1*.dat ./lean/mt/drivers/mt_wifi/files
-        cd .. && mv openwrt/package/base-files/files/etc/config/my-files/shadowsocksr ./scripts/feeds/lean/helloworld/luci-app-ssr-plus/root/etc/config
-        rm -rf openwrt/package/base-files/files/etc/config/my-files
+        rm -rf base-files/files/etc/config/my-files
 
     - name: 增加LuCI主题
       run: |
