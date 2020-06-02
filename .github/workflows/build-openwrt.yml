@@ -88,6 +88,7 @@ jobs:
       run: |
         rm -f openwrt/package/lean/mt/drivers/mt_wifi/files/mt7615.1*.dat
         cd openwrt/package/base-files/files/etc/config && mv my-files/network .
+        cd openwrt/package/base-files/files/etc/config && mv my-files/shadowsocksr .
         cd ../../../.. && mv base-files/files/etc/config/my-files/mt7615.1*.dat ./lean/mt/drivers/mt_wifi/files
         rm -rf base-files/files/etc/config/my-files
 
