@@ -61,7 +61,11 @@ jobs:
         sudo chown $USER:$GROUPS /workdir
 
     - name: Clone source code 克隆源代码
-      run: git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
+      working-directory: /workdir
+      run: |
+        df -hT $PWD
+        git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
        
 #    - name: 自定义软件包或插件
 #      run: |
@@ -79,13 +83,6 @@ jobs:
         mkdir -p package/base-files/files/etc/config || true
         cd package/base-files/files/etc/config
         git clone https://$token@github.com/kuole-o/my-files
-
-    - name: Clone source code
-      working-directory: /workdir
-      run: |
-        df -hT $PWD
-        git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
-        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
     - name: 移动配置文件
       run: |
