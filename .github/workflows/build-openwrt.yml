@@ -188,32 +188,6 @@ jobs:
         name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
 
-    - name: Get current date 获取系统时间
-      id: date
-      run: |
-        echo "::set-output name=date::$(date +'%m/%d_%Y_%H/%M')"
-        echo "::set-output name=date2::$(date +'%m/%d %Y')"
-      
-    - name: Create release 创建release
-      id: create_release
-      uses: actions/create-release@master
-      if: steps.compile.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
-      env:
-        GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      with:
-        tag_name: ${{steps.date.outputs.date}}_${{ env.TARGET }}
-        release_name: ${{steps.date.outputs.date2}} ${{ env.TARGET }}
-        draft: false
-        prerelease: false     
-
-    - name: Upload release asset 发布release
-      uses: csexton/release-asset-action@master
-      if: steps.compile.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
-      with:
-        pattern: "${{ env.FIRMWARE }}/*"
-        github-token: ${{ secrets.ACCESS_TOKEN }}
-        release-url: ${{ steps.create_release.outputs.upload_url }}
-
     - name: 将固件上传到 Cowtransfer
       id: cowtransfer
       if: steps.organize.outputs.status == 'success' && env.UPLOAD_COWTRANSFER == 'true' && !cancelled()
@@ -232,7 +206,7 @@ jobs:
         echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
         echo "::set-output name=url::$(cat wetransfer.log | grep https | cut -f3 -d" ")"
 
-    - name: Generate release tag
+    - name: Generate release tag 创建release
       id: tag
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
@@ -242,7 +216,7 @@ jobs:
         [ $UPLOAD_WETRANSFER = true ] && echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
         echo "::set-output name=status::success"
 
-    - name: Upload firmware to release
+    - name: Upload firmware to release 发布release
       uses: softprops/action-gh-release@v1
       if: steps.tag.outputs.status == 'success' && !cancelled()
       env:
