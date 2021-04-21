@@ -83,7 +83,7 @@ jobs:
 
     - name: 同步私库文件
       env: 
-        token: ${{ secrets.ACCESS_TOKEN }}  
+        token: ${{ secrets.OPENWRT_TOKEN }}  
       run: |
         cd openwrt
         mkdir -p package/base-files/files/etc/config || true
