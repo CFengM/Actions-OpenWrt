@@ -93,7 +93,7 @@ jobs:
     - name: 移动配置文件
       run: |
         mkdir -p package/base-files/files/tmp/profiles || true
-        cd openwrt/package/base-files/files/etc/config && mv my-files/mt_dbdc*.dat .../tmp/profiles/
+        cd openwrt/package/base-files/files/etc/config && mv my-files/mt_dbdc*.dat ../../tmp/profiles/
         cd openwrt/package/base-files/files/etc/config && mv my-files/wireless .
         cd openwrt/package/base-files/files/etc/config && mv my-files/network .
         cd openwrt/package/base-files/files/etc/config && mv my-files/shadowsocksr .
