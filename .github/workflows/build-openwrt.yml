@@ -81,22 +81,21 @@ jobs:
 #        git clone https://github.com/openwrt-develop/luci-theme-atmaterial.git
 #        git clone https://github.com/rosywrt/luci-theme-rosy.git
 
-#    - name: 同步私库文件
-#      env: 
-#        token: ${{ secrets.ACCESS_TOKEN }}  
-#      run: |
-#        cd openwrt
-#        mkdir -p package/base-files/files/etc/config || true
-#        cd package/base-files/files/etc/config
-#        git clone https://$token@github.com/kuole-o/my-files
+    - name: 同步私库文件
+      env: 
+        token: ${{ secrets.ACCESS_TOKEN }}  
+      run: |
+        cd openwrt
+        mkdir -p package/base-files/files/etc/config || true
+        cd package/base-files/files/etc/config
+        git clone https://$token@github.com/kuole-o/my-files
 
-#    - name: 移动配置文件
-#      run: |
-#        rm -f openwrt/package/lean/mt/drivers/mt_wifi/files/mt7615.1*.dat
-#        cd openwrt/package/base-files/files/etc/config && mv my-files/network .
-#        cd openwrt/package/base-files/files/etc/config && mv my-files/shadowsocksr .
-#        cd ../../../.. && mv base-files/files/etc/config/my-files/mt7615.1*.dat ./lean/mt/drivers/mt_wifi/files
-#        rm -rf base-files/files/etc/config/my-files
+    - name: 移动配置文件
+      run: |
+        cd openwrt/package/base-files/files/etc/config && mv my-files/network .
+        cd openwrt/package/base-files/files/etc/config && mv my-files/shadowsocksr .
+        cd ../../../.. && mv base-files/files/etc/config/my-files/mt7615.1*.dat ./lean/mt/drivers/mt_wifi/files
+        rm -rf base-files/files/etc/config/my-files
 
     - name: Load custom feeds 加载自定义p1.sh
       run: |
@@ -119,12 +118,6 @@ jobs:
            CONFIG_PACKAGE_luci-theme-rosy=y
            CONFIG_PACKAGE_luci-theme-atmaterial=y
            EOF
- 
-#    - name: 增加koolproxyR插件        
-#      run: | 
-#           cat >> .config <<EOF
-#           CONFIG_PACKAGE_luci-app-koolproxyr=y
-#           EOF    
                              
     - name: Load custom configuration 加载自定义配置
       run: |
