@@ -92,13 +92,8 @@ jobs:
 
     - name: 移动配置文件
       run: |
-        cd openwrt/package/base-files/files/etc/config && mv my-files/wireless .
-        cd openwrt/package/base-files/files/etc/config && mv my-files/network .
-        cd openwrt/package/base-files/files/etc/config && mv my-files/shadowsocksr .
-        rm -rf base-files/files/etc/config/my-files
-#        cd ../../../.. && mv base-files/files/etc/config/my-files/mt7615.1*.dat ./lean/mt/drivers/mt_wifi/files      
-#        mkdir -p package/base-files/files/tmp/profiles || true
-#        cd openwrt/package/base-files/files && mv etc/config/my-files/mt_dbdc*.dat ./tmp/profiles 
+        cd openwrt/package/base-files/files/etc/config && mv my-files/* .
+        rm -rf my-files
 
     - name: Load custom feeds 加载自定义p1.sh
       run: |
