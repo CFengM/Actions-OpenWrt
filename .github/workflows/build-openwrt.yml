@@ -205,8 +205,6 @@ jobs:
     - name: Generate release tag 创建release
       id: tag
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         echo "::set-output name=release_tag::$(date +"%Y/%m/%d %H:%M:%S")"
         touch release.txt
