@@ -19,7 +19,7 @@
 - 这里的仓库，更改了web ip为：192.168.2.1
 - network、shadowsocksr、wireless配置，引用了一个私库（私库：my-files 存放了 network、shadowsocksr、 wireless文件）；使用需要配置个人令牌到这个仓库的secrets里
 - WiFi配置及密码，使用了上述wireless文件(适用于5.4内核，之前的版本得去mt下拷贝mt765*.dat文件)；宽带账号密码使用了network文件；科学上网使用了shadowsocksr文件；
-- network、shadowsocksr、wireless文件来源：先注释掉.myl文件中的私库文件拷贝两行代码，刷上路由器配置完成后，ssh链接路由器拷贝 etc/config下的network、shadowsocksr、wireless文件。
+- network、shadowsocksr、wireless文件来源：先注释掉.yml文件中的私库文件拷贝两行代码，刷上路由器配置完成后，ssh链接路由器拷贝 etc/config下的network、shadowsocksr、wireless文件。
 - root账号密码设置了本人自己的密码
 
 # Actions-OpenWrt
